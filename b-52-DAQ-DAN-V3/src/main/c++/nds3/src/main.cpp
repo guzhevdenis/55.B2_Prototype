@@ -43,7 +43,7 @@ static std::map<std::string, Device*> m_DeviceMap;
 //general type of mutex for working with threads 
 static std::mutex m_lockDeviceMap;
   
-//constructor 
+//constructor with all parameters
 Device::Device(nds::Factory &factory, const std::string &deviceName, const nds::namedParameters_t & parameters ):
  m_name(deviceName) {
 
