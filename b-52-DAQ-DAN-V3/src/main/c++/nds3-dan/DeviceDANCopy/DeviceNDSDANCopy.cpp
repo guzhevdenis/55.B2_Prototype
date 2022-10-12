@@ -1,8 +1,9 @@
 /**
  * @file DeviceNDSDANCopy.cpp
  *
- * @author Javier Moreno (GMV)
- * @date 10 Sep 2018
+ * @author Denis Guzhev
+ * @date 12 Oct 2022
+ * Labview version program 1.5
  */
 
 #include <tcn.h>

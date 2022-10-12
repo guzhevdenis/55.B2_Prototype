@@ -1,4 +1,10 @@
-//Add description of the author 
+/**
+ * @file main.cpp
+ *
+ * @author Denis Guzhev
+ * @date 12 Oct 2022
+ * Labview version program 1.5
+ */
 
 #include "./../include/main.h"
 #include <iostream>
