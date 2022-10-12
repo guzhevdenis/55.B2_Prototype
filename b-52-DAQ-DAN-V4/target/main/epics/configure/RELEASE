@@ -1,6 +1,0 @@
-
-# Maven ITER plugin generated RELEASE file contents:
-
-EPICS_BASE=/opt/codac-6.3/epics
-
--include $(TOP)/configure/RELEASE.local

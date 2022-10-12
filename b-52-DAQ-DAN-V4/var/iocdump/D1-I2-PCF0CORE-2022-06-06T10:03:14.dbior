@@ -1,5 +1,0 @@
-Driver: drvAsyn
-B-0 multiDevice:Yes canBlock:Yes autoConnect:Yes
-    addr 0 autoConnect Yes enabled Yes connected No exceptionActive No
-DAN-0 multiDevice:Yes canBlock:Yes autoConnect:Yes
-    addr 0 autoConnect Yes enabled Yes connected No exceptionActive No
