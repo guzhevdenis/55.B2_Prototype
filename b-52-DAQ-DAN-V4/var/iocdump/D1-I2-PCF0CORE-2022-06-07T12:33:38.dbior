@@ -1,0 +1,2 @@
+Driver: drvAsyn
+DAN-0 multiDevice:Yes canBlock:Yes autoConnect:Yes

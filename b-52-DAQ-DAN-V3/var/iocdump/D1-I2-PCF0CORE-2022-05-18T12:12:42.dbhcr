@@ -1,0 +1,127 @@
+INST     @asyn(B-0,0)ThresholdValid asynInt32            D1-I2:ThresholdValid 
+INST     @asyn(B-0,0)start    asynInt32            D1-I2:start          
+INST     @asyn(B-0,0)Reseter  asynInt32            D1-I2:reseter        
+INST     @asyn(B-0,0)Downloader asynInt32            D1-I2:downloader     
+INST     @asyn(B-0,0)ConfigureFIFOControl asynInt32            D1-I2:configurefifo  
+INST     @asyn(B-0, 0)WFGNode-Impedance asynInt32            D1-I2:WFGNode-Impedance 
+INST     @asyn(B-0, 0)WFGNode-Coupling asynInt32            D1-I2:WFGNode-Coupling 
+INST     @asyn(B-0, 0)WFGNode-SignalRefType asynInt32            D1-I2:WFGNode-SignalRefType 
+INST     @asyn(B-0, 0)WFGNode-Ground asynInt32            D1-I2:WFGNode-Ground 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Coupling asynInt32            D1-I2-HWCF:DataAcquisition-Coupling 
+INST     @asyn(B-0, 0)DataAcquisitionNode-SignalRefType asynInt32            D1-I2-HWCF:DataAcquisition-SignalRefType 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Ground asynInt32            D1-I2-HWCF:DataAcquisition-Ground 
+INST     @asyn(B-0,0)streamstate asynInt32            D1-I2:streamstate    
+INST     @asyn(B-0,0)measurement_streamstate asynInt32            D1-I2:measurement_streamstate 
+INST     @asyn(B-0, 0)WFGNode-SignalType_RBV asynInt32            D1-I2:WFGNode-SignalTypeRBV 
+INST     @asyn(B-0, 0)WFGNode-StateMachine-getState asynInt32            HWCF:B-0-WFGNode-StateMachine-getState 
+INST     @asyn(B-0, 0)WFGNode-StateMachine-getGlobalState asynInt32            HWCF:B-0-WFGNode-StateMachine-getGlobalState 
+INST     @asyn(DAN-0, 0)StateMachine-getGlobalState asynInt32            DAN-getGlobalState   
+INST     @asyn(DAN-0, 0)DANCP-StateMachine-getState asynInt32            DAN-0-DANCP-getState 
+INST     @asyn(DAN-0, 0)DANCP-Status asynInt32            DAN-Status           
+INST     @asyn(DAN-0, 0)DANCP-StatusStream asynInt32            DAN-StatusStream     
+INST     @asyn(B-0,0)streamrequeststate asynInt32            D1-I2:streamrequeststate 
+INST     @asyn(B-0,0)measurement_streamrequeststate asynInt32            D1-I2:measurement_streamrequeststate 
+INST     @asyn(B-0, 0)WFGNode-SignalType asynInt32            D1-I2:WFGNode-SignalType 
+INST     @asyn(B-0, 0)WFGNode-StateMachine-setState asynInt32            HWCF:B-0-WFGNode-StateMachine-setState 
+INST     @asyn(DAN-0, 0)DANCP-StateMachine-setState asynInt32            DAN-0-DANCPsetState  
+INST     @asyn(B-0,0)Threshold asynInt32            D1-I2:Threshold      
+INST     @asyn(B-0,0)ChannelSelect asynInt32            D1-I2:ChannelSelect  
+INST     @asyn(B-0,0)maxticksperpulse asynInt32            D1-I2:maxticksperpulse 
+INST     @asyn(B-0,0)minticksperpulse asynInt32            D1-I2:minticksperpulse 
+INST     @asyn(B-0,0)streamnumsamples asynInt32            D1-I2:streamnumsamples 
+INST     @asyn(B-0,0)measurement_streamnumsamples asynInt32            D1-I2:measurement_streamnumsamples 
+INST     @asyn(B-0, 0)WFGNode-Amplitude asynFloat64          D1-I2:WFGNode-Amplitude 
+INST     @asyn(B-0, 0)WFGNode-Decimation asynInt32            D1-I2:WFGNode-Decimation 
+INST     @asyn(B-0, 0)WFGNode-Frequency asynFloat64          D1-I2:WFGNode-Frequency 
+INST     @asyn(B-0, 0)WFGNode-RefFrequency asynFloat64          D1-I2:WFGNode-RefFrequency 
+INST     @asyn(B-0, 0)WFGNode-Phase asynFloat64          D1-I2:WFGNode-Phase  
+INST     @asyn(B-0, 0)WFGNode-UpdateRate asynFloat64          D1-I2:WFGNode-UpdateRate 
+INST     @asyn(B-0, 0)WFGNode-DutyCycle asynFloat64          D1-I2:WFGNode-DutyCycle 
+INST     @asyn(B-0, 0)WFGNode-Gain asynFloat64          D1-I2:WFGNode-Gain   
+INST     @asyn(B-0, 0)WFGNode-Offset asynFloat64          D1-I2:WFGNode-Offset 
+INST     @asyn(B-0, 0)WFGNode-BandWidth asynFloat64          D1-I2:WFGNode-BandWidth 
+INST     @asyn(B-0, 0)WFGNode-Resolution asynFloat64          D1-I2:WFGNode-Resolution 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Decimation asynInt32            D1-I2-HWCF:DataAcquisition-Decimation 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DecimationType asynInt32            D1-I2-HWCF:DataAcquisition-DecimationType 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Gain asynFloat64          D1-I2-HWCF:DataAcquisition-Gain 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Offset asynFloat64          D1-I2-HWCF:DataAcquisition-Offset 
+INST     @asyn(B-0, 0)DataAcquisitionNode-BandWidth asynFloat64          D1-I2-HWCF:DataAcquisition-BandWidth 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Resolution asynFloat64          D1-I2-HWCF:DataAcquisition-Resolution 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Impedance asynFloat64          D1-I2-HWCF:DataAcquisition-Impedance 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMAEnable asynInt32            D1-I2-HWCF:DataAcquisition-DMAEnable 
+INST     @asyn(B-0, 0)DataAcquisitionNode-SamplingRate asynFloat64          D1-I2-HWCF:DataAcquisition-SamplingRate 
+INST     @asyn(B-0,0)WFGNode-Data asynFloat64ArrayIn   D1-I2:WFGNode-Data   
+INST     @asyn(B-0,0)WFGNode-DataAWG asynFloat64ArrayOut  D1-I2:WFGNode-DataAWG 
+INST     @asyn(DAN-0,0)buffer asynInt32ArrayOut    buffer               
+INST     @asyn(B-0, 0)DataAcquisitionNode-Data asynInt32ArrayIn     D1-I2-HWCF:DataAcquisition-Data 
+INST     @asyn(DAN-0, 0)DANCP-ICProgramName asynInt8ArrayOut     DAN-ICProgramName    
+INST     @asyn(DAN-0, 0)DANCP-ICProgramName_RBV asynInt8ArrayIn      DAN-ICProgramName_RBV 
+INST     @asyn(DAN-0, 0)DANCP-PathXML asynInt8ArrayOut     DAN-PathXML          
+INST     @asyn(DAN-0, 0)DANCP-PathXML_RBV asynInt8ArrayIn      DAN-PathXML_RBV      
+INST     @asyn(DAN-0, 0)DANCP-SourceName asynInt8ArrayOut     DAN-SourceName       
+INST     @asyn(DAN-0, 0)DANCP-SourceName_RBV asynInt8ArrayIn      DAN-SourceName_RBV   
+INST     @asyn(B-0,0)PulsePeaksFIFO asynInt32ArrayIn     PulsePeaksFIFO       
+INST     @asyn(B-0,0)edges    asynInt32ArrayIn     edges                
+INST     @asyn(DAN-0, 0)DANCP-BlockNumberOfSamples_RBV asynInt32            DAN-BlockNumberOfSamples_RBV 
+INST     @asyn(DAN-0, 0)DANCP-BufferSize_RBV asynInt32            DAN-BufferSize_RBV   
+INST     @asyn(DAN-0, 0)DANCP-NumberOfChannels asynInt32            DAN-NumberOfChannels 
+INST     @asyn(DAN-0, 0)DANCP-SampleSize_RBV asynInt32            DAN-SampleSize_RBV   
+INST     @asyn(DAN-0, 0)DANCP-SamplingRate_RBV asynInt32            DAN-SamplingRate_RBV 
+INST     @asyn(B-0, 0)WFGNode-Impedance_RBV asynInt32            D1-I2:WFGNode-Impedance_RBV 
+INST     @asyn(B-0, 0)WFGNode-Coupling_RBV asynInt32            D1-I2:WFGNode-Coupling_RBV 
+INST     @asyn(B-0, 0)WFGNode-SignalRefType_RBV asynInt32            D1-I2:WFGNode-SignalRefType_RBV 
+INST     @asyn(B-0, 0)WFGNode-Ground_RBV asynInt32            D1-I2:WFGNode-Ground_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Coupling_RBV asynInt32            D1-I2-HWCF:DataAcquisition-Coupling_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-SignalRefType_RBV asynInt32            D1-I2-HWCF:DataAcquisition-SignalRefType_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Ground_RBV asynInt32            D1-I2-HWCF:DataAcquisition-Ground_RBV 
+INST     @asyn(DAN-0, 0)DANCP-BlockNumberOfSamples asynInt32            DAN-BlockNumberOfSamples 
+INST     @asyn(DAN-0, 0)DANCP-BufferSize asynInt32            DAN-BufferSize       
+INST     @asyn(DAN-0, 0)DANCP-SampleSize asynInt32            DAN-SampleSize       
+INST     @asyn(DAN-0, 0)DANCP-SamplingRate asynInt32            DAN-SamplingRate     
+INST     @asyn(B-0,0)Status   asynInt32            Status               
+INST     @asyn(B-0,0)Clock100PLLUnlocked asynInt32            D1-I2:Clock100PLLUnlocked 
+INST     @asyn(B-0,0)EEPROMPowerEnabled asynInt32            D1-I2:EEPROMPowerEnabled 
+INST     @asyn(B-0,0)IOModuleIOEnabled asynInt32            D1-I2:IOModuleIOEnabled 
+INST     @asyn(B-0,0)IOModuleInitializationDone asynInt32            D1-I2:IOModuleInitializationDone 
+INST     @asyn(B-0,0)IOModulePowerEnabled asynInt32            D1-I2:IOModulePowerEnabled 
+INST     @asyn(B-0,0)IOModulePowerGood asynInt32            D1-I2:IOModulePowerGood 
+INST     @asyn(B-0,0)IOModulePresent asynInt32            D1-I2:IOModulePresent 
+INST     @asyn(B-0,0)DeviceTemperature asynInt32            D1-I2:DeviceTemperature 
+INST     @asyn(B-0,0)Device12VPower asynInt32            D1-I2:Device12VPower 
+INST     @asyn(B-0,0)Device33VPower asynInt32            D1-I2:Device33VPower 
+INST     @asyn(B-0,0)ExpectedIOModuleID asynInt32            D1-I2:ExpectedIOModuleID 
+INST     @asyn(B-0,0)InsertedIOModuleID asynInt32            D1-I2:InsertedIOModuleID 
+INST     @asyn(B-0,0)SinglePulsesCountRate asynInt32            D1-I2:SinglePulsesCountRate 
+INST     @asyn(B-0,0)SinglePulsesRegistered asynInt32            D1-I2:SinglePulsesRegistered 
+INST     @asyn(B-0,0)TotalCountRate asynInt32            D1-I2:TotalCountRate 
+INST     @asyn(B-0,0)TotalPulsesRegistered asynInt32            D1-I2:TotalPulsesRegistered 
+INST     @asyn(B-0,0)streammetadata asynInt32            D1-I2:streammeta     
+INST     @asyn(B-0,0)measurement_streammetadata asynInt32            D1-I2:measurement_streammeta 
+INST     @asyn(B-0,0)streamsamplestransferred asynInt32            D1-I2:streamsamplestransferred 
+INST     @asyn(B-0,0)measurement_streamsamplestransferred asynInt32            D1-I2:measurement_streamsamplestransferred 
+INST     @asyn(B-0,0)FIFO_depth asynInt32            FIFO_depth           
+INST     @asyn(B-0,0)DataBufferSize asynInt32            DataBufferSize       
+INST     @asyn(B-0,0)NumberOfElements asynInt32            NumberOfElements     
+INST     @asyn(B-0,0)WFGNode-Amplitude_RBV asynFloat64          D1-I2:WFGNode-Amplitude_RBV 
+INST     @asyn(B-0, 0)WFGNode-Frequency_RBV asynFloat64          D1-I2:WFGNode-Frequency_RBV 
+INST     @asyn(B-0, 0)WFGNode-NumberOfPushedDataBlocks asynInt32            D1-I2:WFGNode-NumberOfPushedDataBlocks 
+INST     @asyn(B-0, 0)WFGNode-RefFrequency_RBV asynFloat64          D1-I2:WFGNode-RefFrequency_RBV 
+INST     @asyn(B-0, 0)WFGNode-Phase_RBV asynFloat64          D1-I2:WFGNode-Phase_RBV 
+INST     @asyn(B-0, 0)WFGNode-UpdateRate_RBV asynFloat64          D1-I2:WFGNode-UpdateRate_RBV 
+INST     @asyn(B-0, 0)WFGNode-DutyCycle_RBV asynFloat64          D1-I2:WFGNode-DutyCycle_RBV 
+INST     @asyn(B-0, 0)WFGNode-Gain_RBV asynFloat64          D1-I2:WFGNode-Gain_RBV 
+INST     @asyn(B-0, 0)WFGNode-Offset_RBV asynFloat64          D1-I2:WFGNode-Offset_RBV 
+INST     @asyn(B-0, 0)WFGNode-BandWidth_RBV asynFloat64          D1-I2:WFGNode-Bandwidth_RBV 
+INST     @asyn(B-0, 0)WFGNode-Resolution_RBV asynFloat64          D1-I2:WFGNode-Resolution_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Gain_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-Gain_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Offset_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-Offset_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-BandWidth_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-BandWidth_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Resolution_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-Resolution_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-Impedance_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-Impedance_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-NumberOfPushedDataBlocks asynInt32            D1-I2-HWCF:DataAcquisition-NoB 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMABufferSize asynInt32            D1-I2-HWCF:DataAcquisition-DMABufferSize 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMAEnable_RBV asynInt32            D1-I2-HWCF:DataAcquisition-DMAEnable_RBV 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMANumChannels asynInt32            D1-I2-HWCF:DataAcquisition-DMANumChannels 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMAFrameType asynInt32            D1-I2-HWCF:DataAcquisition-DMAFrameType 
+INST     @asyn(B-0, 0)DataAcquisitionNode-DMASampleSize asynInt32            D1-I2-HWCF:DataAcquisition-DMASampleSize 
+INST     @asyn(B-0, 0)DataAcquisitionNode-SamplingRate_RBV asynFloat64          D1-I2-HWCF:DataAcquisition-SamplingRate_RBV 
