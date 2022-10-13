@@ -29,7 +29,7 @@
 
 #define NDS_EPOCH 1514764800 /* 00:00 of 1/1/2018 in UTC format. */
 
-//the size of raw data host-FIFO 
+//the number of elements to read from host-FIFO 
 #define SIZE 800000
 
 //Building amplitude spectrum method.

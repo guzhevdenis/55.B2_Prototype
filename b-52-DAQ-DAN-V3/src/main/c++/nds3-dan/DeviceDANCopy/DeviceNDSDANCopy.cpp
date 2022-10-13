@@ -15,7 +15,7 @@
 #define S2NS 1000000000 //Seconds to nanoSeconds
 int counter = 0;
 
-//the size of raw data FIFO
+//the number of elements from Data Acqusition Node in main driver
 #define SIZE 800000
 
 DeviceNDSDANCopy::DeviceNDSDANCopy (nds::Factory& factory,
