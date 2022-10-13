@@ -563,14 +563,14 @@ void Device::DeviceTemperature_Reader(const timespec* timestamp, std::int32_t *p
 }*/
 
 void Device::measurement_streamstate_Reader(const timespec* timestamp, std::int32_t *pIn){
-	if (Device::mode == 1)
-	{
+
+	/*It allows to choose the LabVIEW program*/
+	if (Device::mode == 1){
 		status = NiFpga_ReadU8(session, NiFpga_main_v151_IndicatorU8_streamstate, (uint8_t*)(pIn));
-	}
-	if (Device::mode == 2)
-	{
+	} //Amplitude spectrum program
+	if (Device::mode == 2){
 		status = NiFpga_ReadU8(session, NiFpga_RawDataAcqusition_IndicatorU8_streamstate0 , (uint8_t*)(pIn));
-	}
+	}//Raw data acqusition program
 }
 
 /*U16*/
@@ -594,7 +594,6 @@ void Device::InsertedIOModuleID_Reader(const timespec* timestamp, std::int32_t *
 /*U64*/
 void Device::SinglePulsesCountRate_Reader(const timespec* timestamp, std::int32_t *pIn){
 	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_SinglePulsesCountRate, (uint64_t*)(pIn));
-	//create_histogram (Device::PulsePeaksFIFO , amplitudes,  numbers, 500);
 }
 
 void Device::SinglePulsesRegistered_Reader(const timespec* timestamp, std::int32_t *pIn){
@@ -609,18 +608,10 @@ void Device::TotalPulsesRegistered_Reader(const timespec* timestamp, std::int32_
 	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_TotalPulsesRegistered, (uint64_t*)(pIn));
 }
 
-/*void Device::streammetadata_Reader(const timespec* timestamp, std::int32_t *pIn)
-{
-	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_streammetadata0, (uint64_t*)(pIn));
-}*/
 void Device::measurement_streammetadata_Reader(const timespec* timestamp, std::int32_t *pIn){
 	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_streammetadata, (uint64_t*)(pIn));
 }
 
-/*void Device::streamsamplestransferred_Reader(const timespec* timestamp, std::int32_t *pIn)
-{
-	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_streamsamplestransferred0, (uint64_t*)(pIn));
-}*/
 void Device::measurement_streamsamplestransferred_Reader(const timespec* timestamp, std::int32_t *pIn){
 	status = NiFpga_ReadU64(session, NiFpga_main_v151_IndicatorU64_streamsamplestransferred, (uint64_t*)(pIn));
 }
@@ -636,39 +627,26 @@ void Device::start_Writer(const timespec& timestamp, const std::int32_t & pOut){
 }
 
 /*U8*/
-/*void Device::streamrequeststate_Writer(const timespec& timestamp, const std::int32_t & pOut)
-{
-	//status = NiFpga_WriteU8(session, NiFpga_main_v151_ControlU8_streamrequeststate0, (uint8_t&)(pOut));
-	ni::fpga::stream_state current_state;
-    current_state = ni::fpga::stream_state(pOut); 
-    status = NiFpga_WriteU8(session, NiFpga_main_v151_ControlU8_streamrequeststate0, current_state); 
 
-    /* "    0 - idle\n"
-           "    1 - finite transfer\n"
-           "    2 - continuous\n"
-           "    3 - done\n"
-           "    4 - error\n"
-           "    5 - not ready\n"
-           "    6 - cancel\n"
-    */
-//}
 void Device::measurement_streamrequeststate_Writer(const timespec& timestamp, const std::int32_t & pOut){
 	
 	status = NiFpga_WriteU8(session, NiFpga_main_v151_ControlU8_streamrequeststate, (pOut));
 
-	if (pOut == 0)
-	{
+	if (pOut == 0){
 			m_bStop_DataAcquisition=true;
 			m_DataAcquisition_Thread.join();
+			//switching to idle state
+			//stops data acquisition process(it can be done also through Stop method in DAQ node state machine) 
 	}
 
-	if(pOut == 2)
-	{
+	if(pOut == 2){
 		status = NiFpga_ReleaseFifoElements(session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, number_of_elements);
 		m_bStop_DataAcquisition=false;
 		m_DataAcquisition_Thread =
 	  	m_DataAcquisition.runInThread("DAQ",
 					std::bind(&Device::DataAcquisition_thread_body,this));
+			//switching to continious state
+			//starts the data acqusition process 
 	}
 
 	/*	         
@@ -721,26 +699,23 @@ void Device::FIFO_depth_Reader(const timespec* timestamp, std::int32_t *pIn){
 
 //Configure FPGA resources methods
 void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & pOut){
-	//Amplitude spectrum programm
-    if (pOut == 1)
-    {
-        //status = NiFpga_Download(session);
-		//Initalization of NiFpga Library
-		if (Device::mode == 2)
-		{
-				//status = NiFpga_ReleaseFifoElements(session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0, number_of_elements);
+	/*Amplitude spectrum programm*/
+   	if (pOut == 1){
+
+		if (Device::mode == 2){
 				NiFpga_MergeStatus(&status, NiFpga_Close(session, 0));
 				status = NiFpga_Finalize();
-		}
+		} 
 
-		Device::mode = 1;
-        status = NiFpga_Initialize();
+		Device::mode = 1; 
+        status = NiFpga_Initialize(); //Initialization of NiFpga library
+
 
 		NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/vnc_main_v1.5.1.lvbitx",
 		                   NiFpga_main_v151_Signature,
 		                   "RIO0",
 		                    0,
-		                    &session)); 
+		                    &session)); //download Bitfile to FPGA target
 
 		//start controller
 		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
@@ -750,16 +725,18 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
         NiFpga_main_v151_ControlBool_ThresholdValid, NiFpga_True));
 
-		status = NiFpga_WriteI16 (session, NiFpga_main_v151_ControlI16_Threshold, 900);
+		status = NiFpga_WriteI16 (session, NiFpga_main_v151_ControlI16_Threshold, 900); //900 out of 32767. Range of ADC -1V -- 1V. (-32768 to 32767)
+																						//900 -- 0.03V
 		   
 	    status = NiFpga_WriteU64(session, NiFpga_main_v151_ControlU64_streamnumsamples, sample_size);
 
 	    status = NiFpga_WriteU64(session, NiFpga_main_v151_ControlU8_streamrequeststate, 0);
 
 		status = NiFpga_StopFifo (session,NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
-		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, 10*1023, &fifo_depth);
+		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, 10*1023, &fifo_depth); //the size of host-FIFO 10 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
 
+		//configuration of time window for pulse detection
 		status = NiFpga_WriteU32(session, NiFpga_main_v151_ControlU32_maxticksperpulse, 30);
 		status = NiFpga_WriteU32(session, NiFpga_main_v151_ControlU32_minticksperpulse, 10);
 
@@ -768,146 +745,55 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
     }
 
 	//RawDataAcquisition Programm
-	if (pOut == 2) 
-	{	
-		if(Device::mode == 1)
-		{
-				//status = NiFpga_ReleaseFifoElements(session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, number_of_elements);
+	if (pOut == 2) {	
+
+		if(Device::mode == 1){
     			NiFpga_MergeStatus(&status, NiFpga_Close(session, 0));
     			status = NiFpga_Finalize();
 		}
 
 		Device::mode = 2;
-		status = NiFpga_Initialize();
-		
-        /*Open an FPGA session by referring to the corresponding bitfile, its unique signature, and	
-		resource name*/
+		status = NiFpga_Initialize(); //Initialization of NiFpga library
 
 		NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/NiFpga_RawDataAcqusition.lvbitx",
 		                   NiFpga_RawDataAcqusition_Signature,
 		                   "RIO0",
 		                    0,
-		                    &session)); 
-
-		//transition to the idle state
-		//configuration of the FIFO
+		                    &session)); //download Bitfile to FPGA target
 
 		status = NiFpga_WriteU64(session, NiFpga_RawDataAcqusition_ControlU64_streamnumsamples0, sample_size);
 		status = NiFpga_WriteU64(session,  NiFpga_RawDataAcqusition_ControlU8_streamrequeststate0 , 0);
 
 	    status = NiFpga_StopFifo (session,NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0);
-		status = NiFpga_ConfigureFifo2 (session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0, 819100000, &fifo_depth);
+		status = NiFpga_ConfigureFifo2 (session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0, 8191*100000, &fifo_depth); //100000 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0);
 	}
 
-	//new IRIO acquisition program 
-	if (pOut == 3)
-	{
-		Device::mode == 3;
-		status = NiFpga_Initialize();
-
-		//open an FPGA session 
-		NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/NiFpga_IRIO_rules_raw_data.lvbitx",
-		                   NiFpga_IRIO_rules_raw_data_Signature,
-		                   "RIO0",
-		                    0,
-		                    &session));
-		
-		status = NiFpga_StopFifo (session,NiFpga_IRIO_rules_raw_data_TargetToHostFifoI16_DMATOHOST0);
-		status = NiFpga_ConfigureFifo2 (session, NiFpga_IRIO_rules_raw_data_TargetToHostFifoI16_DMATOHOST0, 10230000, &fifo_depth);
-		status = NiFpga_StartFifo (session, NiFpga_IRIO_rules_raw_data_TargetToHostFifoI16_DMATOHOST0);	 
-
-	}
 }
 
 
 
 void Device::Reseter_Writer(const timespec& timestamp, const std::int32_t & pOut){
-    if (pOut == 1)
-    {
+    if (pOut == 1){
        status = NiFpga_Reset(session);
     }
 }
 
 void Device::ConfigureFIFO_Writer(const timespec& timestamp, const std::int32_t & pOut){
-      if(pOut == 1)
-      {
+      if(pOut == 1){
 		  fifo_depth = 1000000;
           status = NiFpga_StopFifo (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
-          status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, fifo_depth, &fifo_depth);
-         // status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
-
-		//  status = NiFpga_StopFifo (session, NiFpga_main_v151_TargetToHostFifoI16_RawData);
-        //  status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_RawData, fifo_depth, &fifo_depth);
-        //  status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_RawData);
+          status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, fifo_depth, &fifo_depth);    
       }
-        
 }
 
 void Device::step_Writer(const timespec& timestamp, const std::int32_t & pOut){
       Device::step = pOut;
-        
 }
-/*void Device::StartRoutine_Writer(const timespec& timestamp, const std::int32_t & pOut)
-{
-
-       if(pOut == 1)
-
-       {    
-          //buffer for output data     
-           std::vector<int16_t> data_buffer;
-           //pointer to the DMA buffer  
-           int16_t* dma_buffer;
-
-           size_t elements_requested = 0;
-           size_t elements_acquired = 0;
-           size_t elements_remaining = 0;
-
-           data_buffer.reserve(std::min(sample_size, data_buffer.max_size()));
-           size_t fifo_max_reserve = fifo_depth / 2;   // limit maximum FIFO memory block reservation
-                                                // to avoid timeouts.
-
-           status = NiFpga_Status_Success;
 
 
-           //data acquisition thread  
-           std::thread fifo_reader([&]() {
-                while (data_buffer.size() < sample_size && NiFpga_IsNotError(status)) {
-                    status = NiFpga_AcquireFifoReadElementsI16(session,
-                        dma_fifo, &dma_buffer, elements_requested, 5000, &elements_acquired, &elements_remaining
-                    );
-
-                    number_of_elements = elements_acquired;
-                    data_buffer.insert(data_buffer.end(), dma_buffer, dma_buffer+elements_acquired);
-                    status = NiFpga_ReleaseFifoElements(session, dma_fifo, elements_acquired);
-                    elements_requested = std::min(elements_remaining, fifo_max_reserve);
-
-                } // while loop
-            });
-
-            //Go To Finite Transfer State    
-            status = NiFpga_WriteU8(session, NiFpga_singlechannelmain_ControlU8_streamrequeststate0, (uint8_t)ni::fpga::stream_state::finite_transfer);
-            fifo_reader.join();
-           
-            /* Open output file (either with a user-specified name, or with an automatically assigned) */
-            //Output binary file stream
-           // std::string output = "/home/codac-dev/NDS_tests/daq_stream/nds3/recordings/recording.bin";
-        /*
-            std::ofstream bin_file(out_directory + out_file_name, std::ios::binary | std::ios::out);
-            data_buffer_size = data_buffer.size();
-
-            bin_file.write(reinterpret_cast<const char*>(data_buffer.data()), data_buffer.size() * sizeof(uint16_t));
-            status_of_file_recording = 1; 
-            data_buffer.clear(); */
-       //}
-    
-    /*  else
-       {
-          
-       }*/
-//} 
-
-/*Waveform generation functions*/
+/*Waveform generation node functions*/
+/*It is used for test purpose*/
 void Device::PV_WaveformGeneration_Frequency_Initializer(timespec* timestamp,
 		double* value) {
 	*timestamp = {NDS_EPOCH, 110};
@@ -1279,18 +1165,20 @@ void Device::WaveformGeneration_thread_body(){
 		//Save last sample generated.
 		last_sample+=scanVector;
 
-	// Push the vector to the control system
+		// Push the vector to the control system
 		m_WaveformGeneration.push(m_WaveformGeneration.getTimestamp(), outputData);
 		++NumberOfPushedDataBlocks;
-	//TODO: Send values to data acquisition node.
+		//TODO: Send values to data acquisition node.
 
-	// Rest for a while
-	::usleep(100000);
+		// Rest for a while
+		::usleep(100000);
 	}
 
 	m_WaveformGeneration.setNumberOfPushedDataBlocks(m_WaveformGeneration.getTimestamp(),NumberOfPushedDataBlocks);
 }
 
+
+/*Data Acquisiton node methods*/
 void Device::switchOn_DataAcquisition() {
 }
 
@@ -1299,31 +1187,30 @@ void Device::switchOff_DataAcquisition() {
 
 void Device::start_DataAcquisition() {
 
-	if (Device::mode == 1)
-	{
+	if (Device::mode == 1){
 		status = NiFpga_WriteU8(session, NiFpga_main_v151_ControlU8_streamrequeststate, 2);
-	}
-	if (Device::mode == 2)
-	{
+	} // it starts acquisition procces of Amplitude spectrum program
+	if (Device::mode == 2){
 		status = NiFpga_WriteU8(session, NiFpga_RawDataAcqusition_ControlU8_streamrequeststate0, 2);
-	}
-	m_bStop_DataAcquisition=false;
+	} // it starts process of Raw data acquisition program
+
+	m_bStop_DataAcquisition=false; //starts the cycle 
+
 	m_DataAcquisition_Thread =
 	  m_DataAcquisition.runInThread("DAQ",
-					std::bind(&Device::DataAcquisition_thread_body,this));
+					std::bind(&Device::DataAcquisition_thread_body,this)); // runs the thread in thread body method 
 }
 
 void Device::stop_DataAcquisition() {
 
 	m_bStop_DataAcquisition=true;
-	if (Device::mode == 1)
-	{
+	if (Device::mode == 1){
 		status = NiFpga_WriteU64(session, NiFpga_main_v151_ControlU8_streamrequeststate,0);
-	}
-	if (Device::mode == 2)
-	{
+	} //it stops acquisition process of Amplitude spectrum program 
+
+	if (Device::mode == 2){
 		status = NiFpga_WriteU8(session, NiFpga_RawDataAcqusition_ControlU8_streamrequeststate0, 0);
-	}
+	} //it stops process of Raw data acquisition program
 	m_DataAcquisition_Thread.join();
 }
 
@@ -1335,10 +1222,9 @@ bool Device::allow_DataAcquisition_Change(const nds::state_t , const nds::state_
 	return true;
 }
 
-
-//Spectrum Data Acquisition
 void Device::DataAcquisition_thread_body() {
 
+	/*optional methods*/
 	// Get Gain
 	double Gain = m_DataAcquisition.getGain();
 	// Get Bandwidth
@@ -1351,7 +1237,6 @@ void Device::DataAcquisition_thread_body() {
 	double SignalRefTYpe = m_DataAcquisition.getSignalRefType();
 	// Get Ground
 	double Ground = m_DataAcquisition.getGround();
-
 	// Get offset
 	double Offset = m_DataAcquisition.getOffset();
 	// Get impedance
@@ -1654,14 +1539,11 @@ void Device::PV_DataAcquisition_SamplingRate_Initializer(timespec* timestamp,
 	*value = 10.0; //Note that this value has no sense and it is fixed only for testing purposes.
 }
 
-
-
 //Additional calculation
 
 /*Number of rejections*/
   void Device::RejectionRate_Reader(const timespec* timestamp, double *pIn){
-	  if(NiFpga_IsNotError(status))
-    {
+	  if(NiFpga_IsNotError(status)){
         std::uint64_t *total = 0;
         std::uint64_t *single = 0;
         NiFpga_MergeStatus(&status, NiFpga_ReadU64(session,
@@ -1671,38 +1553,35 @@ void Device::PV_DataAcquisition_SamplingRate_Initializer(timespec* timestamp,
                             static_cast<std::uint64_t>(NiFpga_main_v151_IndicatorU64_SinglePulsesCountRate), 
                             single));
         //calculation of Rejection rate    
-		if (total != 0)
-		{
+		if (total != 0){
 			*pIn = ((*total)-(*single) / (*total)) * 100;
 		}
-		else
-		{
+		else{
 			*pIn = 0;
 		}
     }
   }
 
 //Amplitude spectrum calculation. 
+/*https://stackoverflow.com/questions/49458662/calculate-histogram-from-a-set-of-data-using-the-standard-library-or-the-boost-l*/
 
 /*Making of distribution from PulsePeaks FIFO*/ 
 /*range - bin width, can be changed in data acquisition thread body*/ 
   void create_histogram (std::vector<int>&a , std::vector<double>& b, std::vector<double>& c, int range){
 
-	if (a.empty() != true)
-	{	
+	if (a.empty() != true){
 		std::sort(a.begin(), a.end());
 		std::map<int, int> histogram;
-		
+
 		double bin = 0; //Choose your starting bin
 		const double bin_width = range; //Choose your bin interval
-		for (const auto& e : a)
-		{
+
+		for (const auto& e : a){
 			e >= bin + bin_width ? bin += bin_width : false;
 			++histogram[bin];
 		}
 
-		for (const auto& x : histogram) 
-		{
+		for (const auto& x : histogram){
 			b.push_back((x.first + bin_width)/32767);
 			c.push_back(x.second);					
 		}
@@ -1710,8 +1589,7 @@ void Device::PV_DataAcquisition_SamplingRate_Initializer(timespec* timestamp,
 }
 
 void show(std::vector<int>& a){
-    for (int i = 0; i < a.size(); ++i )
-    {
+    for (int i = 0; i < a.size(); ++i ){
         std::cout<<a[i]<<" ";
     }
     std::cout<<std::endl;
@@ -1756,4 +1634,3 @@ void Device::maximum_amplitude_Reader (const timespec* timestamp, double *pIn){
 }
 
 NDS_DEFINE_DRIVER(Device, Device)
-
