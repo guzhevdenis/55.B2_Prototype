@@ -25,8 +25,9 @@
 #include <fstream>
 #include <bits/stdc++.h>
 #include "./../include/NiFpga_RawDataAcqusition.h"
-#include "/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_IRIO_rules_raw_data.h"
+//#include "/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_IRIO_rules_raw_data.h"
 #include "./../include/NiFpga_main_SpectrRaw.h"
+//#include "/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_main_v151.h"
 
 #define NDS_EPOCH 1514764800 /* 00:00 of 1/1/2018 in UTC format. */
 
@@ -553,7 +554,7 @@ void Device::DeviceTemperature_Reader(const timespec* timestamp, std::int32_t *p
 		NiFpga_MergeStatus(&status, NiFpga_ReadI8(session,
 			static_cast<int32_t>(NiFpga_main_v151_IndicatorI8_DeviceTemperature),
 			help));
-		*pIn=*help;
+		*pIn = *help;
 	}
 }
 
@@ -711,7 +712,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		Device::mode = 1; 
         status = NiFpga_Initialize(); //Initialization of NiFpga library
 
-
+			std::cout << "Amplitude Spectrum" << std::endl;
 		NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/vnc_main_v1.5.1.lvbitx",
 		                   NiFpga_main_v151_Signature,
 		                   "RIO0",
@@ -742,6 +743,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		status = NiFpga_WriteU32(session, NiFpga_main_v151_ControlU32_minticksperpulse, 10);
 
 		status = NiFpga_WriteU16(session, NiFpga_main_v151_ControlU16_ChannelSelect, 0);
+		status = 10;
 		//max and min 
     }
 
@@ -772,11 +774,12 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 
 	//RawDataAndSepctrum Programm
 
-	if (pOut ==3 ) {
+	if (pOut == 3 ) {
 		
 		//TODO: add switching off from other mode
 	Device::mode = 3;
 	status = NiFpga_Initialize();
+	std::cout << "SpectrAndRaw Mode" << std::endl;
 
 	NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/NiFpga_main_SpectrRaw.lvbitx",
 		                   NiFpga_main_v151_Signature,
@@ -787,6 +790,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
         NiFpga_main_v151_ControlBool_start, NiFpga_True));
 
+		
 		//Threshold Valid
 		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
         NiFpga_main_v151_ControlBool_ThresholdValid, NiFpga_True));
@@ -812,6 +816,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		status = NiFpga_StopFifo (session,NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
 		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, 800000, &fifo_depth); //100000 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
+		status = 10;
 	}
 	
 

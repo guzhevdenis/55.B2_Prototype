@@ -228,7 +228,7 @@ record (mbbo,"D1-I2:downloader")
     field (THVL, "3")
     field(ONST,"AmplitudeSpectrum")
 	field(TWST,"RawDataAcquisition")
-    field (THST, "IRIOTest")
+    field (THST, "SpectrAndData")
 	field(SCAN, "Passive")
     
 }

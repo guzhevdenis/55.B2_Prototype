@@ -1,9 +1,17 @@
+/**
+ * @file main.h
+ *
+ * @author Denis Guzhev
+ * @date 12 Oct 2022
+ * Labview version program 1.5
+ */
+
 #ifndef VNC_H_
 #define VNC_H_
 
 #include <nds3/nds.h>
 #include "NiFpga.h"
-#include "./../include/NiFpga_main_v151.h" 
+//#include "./../include/NiFpga_main_v151.h" 
 //#include "nifpga.hpp"
 //#include "state_machine.hpp"
 
@@ -197,66 +205,9 @@ const char* device = "RIO0";
                 //A thread that runs DataAcquisition_thread_body().
             nds::Thread m_DataAcquisition_Thread;
 
-                //A boolean flag that stop the DataAcquisition loop in
-                //DataAcquisition_thread_body() when true.
+            //A boolean flag that stop the DataAcquisition loop in
+            //DataAcquisition_thread_body() when true.
             volatile bool m_bStop_DataAcquisition;
-
-            /*PVs for bool FPGA indicators*/
-           // nds::PVBaseIn Status_m;
-           /* nds::PVBaseIn Clock100PLLUnlocked_m;
-            nds::PVBaseIn EEPROMPowerEnabled_m;
-            nds::PVBaseIn IOModuleIOEnabled_m;
-            nds::PVBaseIn IOModuleInitializationDone_m;
-            nds::PVBaseIn IOModulePowerEnabled_m;
-            nds::PVBaseIn IOModulePowerGood_m;
-            nds::PVBaseIn IOModulePresent_m;*/
-
-
-            /*PVs for I8 FPGA indicators*/
-            //nds::PVBaseIn DeviceTemperature_m;
-
-            /*PVs for U8 FPGA indicators*/
-            /* nds::PVBaseIn streamstate_m;*/
-
-            /*PVs for U16 FPGA indicators*/
-            /*nds::PVBaseIn Device12VPower_m;
-            nds::PVBaseIn Device33VPower_m;*/
-
-            /*PVs for U32 FPGA indicators*/
-            /*nds::PVBaseIn ExpectedIOModuleID_m;
-            nds::PVBaseIn InsertedIOModuleID_m;*/
-
-            /*PVs for U64 FPGA indicators*/
-            /*nds::PVBaseIn SinglePulsesCountRate_m;
-            nds::PVBaseIn SinglePulsesRegistered_m;
-            nds::PVBaseIn TotalCountRate_m;
-            nds::PVBaseIn TotalPulsesRegistered_m;
-            nds::PVBaseIn streammetadata_m;
-            nds::PVBaseIn streamsamplestransferred_m;*/
-            
-
-            /*PVs for bool FPGA controls*/
-            /*nds::PVBaseOut ThresholdValid_m;
-            nds::PVBaseOut start_m;*/
-
-            /*PVs for U8 FPGA controls*/
-           // nds::PVBaseOut streamrequeststate_m;
-
-            /*PVs for I16 FPGA controls*/
-           // nds::PVBaseOut Threshold_m;
-
-            /*PVs for U16 FPGA controls*/
-           // nds::PVBaseOut ChannelSelect_m;
-
-            /*PVs for U32 FPGA controls*/
-           // nds::PVBaseOut maxticksperpulse_m;
-           // nds::PVBaseOut minticksperpulse_m;
-
-            /*PVs for U64 FPGA controls*/
-           // nds::PVBaseOut streamnumsamples_m;
-
-            /*PV for FIFO*/
-           // nds::PVBaseIn PulsePeaksFIFO_m;*
 
             /*FPGA functions*/
             

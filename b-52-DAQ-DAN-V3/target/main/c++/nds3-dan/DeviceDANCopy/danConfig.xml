@@ -29,7 +29,7 @@
 				</channel>
 			</channelsInfo>
 		</source>
-		<danStreamer name="DAN3">
+		<danStreamer name="DAN0">
 			<link>ALL</link>  
 			<internal>
 			<!--				<advanced>

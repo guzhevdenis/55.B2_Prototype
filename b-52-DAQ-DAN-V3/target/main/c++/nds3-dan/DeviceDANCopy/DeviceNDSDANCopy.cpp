@@ -1,8 +1,9 @@
 /**
  * @file DeviceNDSDANCopy.cpp
  *
- * @author Javier Moreno (GMV)
- * @date 10 Sep 2018
+ * @author Denis Guzhev
+ * @date 12 Oct 2022
+ * Labview version program 1.5
  */
 
 #include <tcn.h>
@@ -14,7 +15,7 @@
 #define S2NS 1000000000 //Seconds to nanoSeconds
 int counter = 0;
 
-//the size of raw data FIFO
+//the number of elements from Data Acqusition Node in main driver
 #define SIZE 800000
 
 DeviceNDSDANCopy::DeviceNDSDANCopy (nds::Factory& factory,
@@ -163,6 +164,7 @@ void DeviceNDSDANCopy::PV_buffer_writer(const timespec& timestamp, const std::ve
   std::int32_t sampleSize = m_DANCP.getSampleSize();
   std::int32_t blockSizeInBytes = blockSize*nChannels*sampleSize;
   std::int32_t vectorSize = value.capacity()*2; //Received vector size in bytes. 2 for int16
+ 
   timespec actualTime;
   std::uint64_t currentTimeNs;
   //std::int16_t* help = value.data();
@@ -215,7 +217,7 @@ void DeviceNDSDANCopy::initializePVs(void){
   //std::uint64_t initTimeBetweenBlocks(10);
   //std::uint64_t initMaxAcquisitionTime(1000000000000);
 
-  std::int32_t initNumberOfBlocks(100);
+  std::int32_t initNumberOfBlocks(100); // it can be tested manually 
 
   std::int32_t initMaxChannels(1);
 
