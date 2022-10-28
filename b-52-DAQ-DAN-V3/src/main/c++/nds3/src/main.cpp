@@ -782,7 +782,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 	std::cout << "SpectrAndRaw Mode" << std::endl;
 
 	NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/NiFpga_main_SpectrRaw.lvbitx",
-		                   NiFpga_main_v151_Signature,
+		                   "8B6E52C60259BD7D8CFB7006174C6A04",
 		                   "RIO0",
 		                    0,
 		                    &session)); //download Bitfile to FPGA target
