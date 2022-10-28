@@ -812,6 +812,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		status = NiFpga_StopFifo (session,NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
 		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, 800000, &fifo_depth); //100000 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
+	}
 	
 
 }
@@ -1393,31 +1394,78 @@ void Device::DataAcquisition_thread_body() {
 
 	if (Device::mode == 3)
 	{
-			size_t elements_requested = SIZE; //theoretically 1ms of acquisition
-           	size_t elements_acquired = 0;
-           	size_t elements_remaining = 0;
+		while(!m_bStop_DataAcquisition){
+			
+		std::int32_t NumberOfPushedDataBlocks(0);
+		std::vector<int32_t> data_buffer;
+		
+
+        size_t elements_requested = 1023;
+        size_t elements_acquired = 0;
+        size_t elements_remaining = 0;
+
+		data_buffer.reserve(100000);
+        size_t fifo_max_reserve = fifo_depth / 2;                                         
+		status = NiFpga_Status_Success;
+
+			size_t elements_requested_raw = SIZE; //theoretically 1ms of acquisition
+		 
+           	size_t elements_acquired_raw = 0;
+           	size_t elements_remaining_raw = 0;
+
 			std::int16_t* rawdata;
+
 			rawdata = (std::int16_t*)malloc(elements_requested*2);
+
 			memset(rawdata, 0, elements_requested*2);
 
-			NiFpga_WriteBool(session, NiFpga_IRIO_rules_raw_data_ControlBool_stop, 1);
 
-			while(!m_bStop_DataAcquisition){
-			
-					status = NiFpga_AcquireFifoReadElementsI16(session,
-                    NiFpga_IRIO_rules_raw_data_TargetToHostFifoI16_DMATOHOST0, &rawdata, elements_requested, 5000, 
-					&elements_acquired, &elements_remaining);
-				  	memcpy(data.data(), rawdata, elements_acquired*2);
+		std::thread fifo_reader([&]() {
+                    					status = NiFpga_AcquireFifoReadElementsI16(session,
+                     							NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, &outputdata, elements_requested, 5000, 
+												&elements_acquired, &elements_remaining); 
+				
+                   						number_of_elements = elements_acquired;
+                   
+				  						data_buffer.insert(data_buffer.end(), outputdata, outputdata+elements_acquired);
+										status = NiFpga_ReleaseFifoElements(session,
+													NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, elements_acquired);
 
-					//usleep(0.1);
+													status = NiFpga_AcquireFifoReadElementsI16(session,
+                    NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, &rawdata, elements_requested_raw, 5000, 
+					&elements_acquired_raw, &elements_remaining_raw);
+					
+					//number_of_elements = elements_acquired;
+
+				  	memcpy(data.data(), rawdata, elements_acquired_raw*2);
+					
+					//std::cout << data[6] <<std::endl;	
+					//for (int k = 0; k < elements_acquired; k++)
+					//{
+					//	data.push_back(*(rawdata+k));
+					//}
+					//data.insert(data.begin(), data.data(), data.data()+100);
+					//data.shrink_to_fit();
+					//it have to be checked properly for DAN connection
+					//usleep(0.0001);
+
 					m_DataAcquisition.push(m_DataAcquisition.getTimestamp(), data);
-					status = NiFpga_ReleaseFifoElements(session, NiFpga_IRIO_rules_raw_data_TargetToHostFifoI16_DMATOHOST0, elements_acquired);
+					
+					status = NiFpga_ReleaseFifoElements(session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, elements_acquired_raw);
 					data.clear();
-				   
-					//status = NiFpga_ReleaseFifoElements(session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0, elements_acquired);
-					//usleep(0.001);
-					//usleep(1);
-			}
+		});
+
+				fifo_reader.join(); 
+
+                create_histogram (data_buffer, amplitudes,  numbers, Device::step);
+	
+				if (amplitudes.size() >= 10000)
+				{
+					amplitudes.clear();
+					numbers.clear();
+				}
+	}	
+			
 			
 	}
 }

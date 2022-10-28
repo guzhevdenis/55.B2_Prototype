@@ -11,7 +11,7 @@
 
 #include <nds3/nds.h>
 #include "NiFpga.h"
-#include "./../include/NiFpga_main_v151.h" 
+//#include "./../include/NiFpga_main_v151.h" 
 //#include "nifpga.hpp"
 //#include "state_machine.hpp"
 

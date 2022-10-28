@@ -3,8 +3,8 @@
  * for NI-RIO 18.0.0 or later.
  */
 
-#ifndef __NiFpga_main_v151_h__
-#define __NiFpga_main_v151_h__
+#ifndef __NiFpga_main_SpectrRaw_h__
+#define __NiFpga_main_SpectrRaw_h__
 
 #ifndef NiFpga_Version
    #define NiFpga_Version 1800
