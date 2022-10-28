@@ -26,6 +26,7 @@
 #include <bits/stdc++.h>
 #include "./../include/NiFpga_RawDataAcqusition.h"
 #include "/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_IRIO_rules_raw_data.h"
+#include "./../include/NiFpga_main_SpectrRaw.h"
 
 #define NDS_EPOCH 1514764800 /* 00:00 of 1/1/2018 in UTC format. */
 
@@ -768,6 +769,50 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		status = NiFpga_ConfigureFifo2 (session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0, 8191*100000, &fifo_depth); //100000 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_RawDataAcqusition_TargetToHostFifoI16_DMATtoHOST0);
 	}
+
+	//RawDataAndSepctrum Programm
+
+	if (pOut ==3 ) {
+		
+		//TODO: add switching off from other mode
+	Device::mode = 3;
+	status = NiFpga_Initialize();
+
+	NiFpga_MergeStatus(&status, NiFpga_Open("/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/bitfile/NiFpga_main_SpectrRaw.lvbitx",
+		                   NiFpga_main_v151_Signature,
+		                   "RIO0",
+		                    0,
+		                    &session)); //download Bitfile to FPGA target
+		//start controller
+		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
+        NiFpga_main_v151_ControlBool_start, NiFpga_True));
+
+		//Threshold Valid
+		NiFpga_MergeStatus(&status, NiFpga_WriteBool(session,
+        NiFpga_main_v151_ControlBool_ThresholdValid, NiFpga_True));
+
+		status = NiFpga_WriteI16 (session, NiFpga_main_v151_ControlI16_Threshold, 900); //900 out of 32767. Range of ADC -1V -- 1V. (-32768 to 32767)
+																						//900 -- 0.03V
+		   
+	    status = NiFpga_WriteU64(session, NiFpga_main_v151_ControlU64_streamnumsamples, sample_size);
+
+	    status = NiFpga_WriteU64(session, NiFpga_main_v151_ControlU8_streamrequeststate, 0);
+
+		status = NiFpga_StopFifo (session,NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
+		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO, 10*1023, &fifo_depth); //the size of host-FIFO 10 times bigger than target-FIFO
+		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_PulsePeaksFIFO);
+
+		//configuration of time window for pulse detection
+		status = NiFpga_WriteU32(session, NiFpga_main_v151_ControlU32_maxticksperpulse, 30);
+		status = NiFpga_WriteU32(session, NiFpga_main_v151_ControlU32_minticksperpulse, 10);
+
+		status = NiFpga_WriteU16(session, NiFpga_main_v151_ControlU16_ChannelSelect, 0);
+		//max and min 
+
+		status = NiFpga_StopFifo (session,NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
+		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, 800000, &fifo_depth); //100000 times bigger than target-FIFO
+		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
+	
 
 }
 

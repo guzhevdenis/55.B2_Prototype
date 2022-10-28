@@ -19,7 +19,7 @@
  *
  *    static const char* const Bitfile = "C:\\" NiFpga_main_v151_Bitfile;
  */
-#define NiFpga_main_v151_Bitfile "NiFpga_main_v151.lvbitx"
+#define NiFpga_main_v151_Bitfile "NiFpga_main_SpectrRaw.lvbitx"
 
 /**
  * The signature of the FPGA bitfile.
