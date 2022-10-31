@@ -26,8 +26,8 @@
 #include <bits/stdc++.h>
 #include "./../include/NiFpga_RawDataAcqusition.h"
 //#include "/home/codac-dev/test_HMI-project/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_IRIO_rules_raw_data.h"
-#include "./../include/NiFpga_main_SpectrRaw.h"
-//#include "/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_main_v151.h"
+//#include "./../include/NiFpga_main_SpectrRaw.h"
+#include "/home/codac-dev/55.B2_Prototype/b-52-DAQ-DAN-V3/src/main/c++/nds3/include/NiFpga_main_v151.h"
 
 #define NDS_EPOCH 1514764800 /* 00:00 of 1/1/2018 in UTC format. */
 
@@ -774,7 +774,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 
 	//RawDataAndSepctrum Programm
 
-	if (pOut == 3 ) {
+	/*if (pOut == 3 ) {
 		
 		//TODO: add switching off from other mode
 	Device::mode = 3;
@@ -817,7 +817,7 @@ void Device::Downloader_Writer(const timespec& timestamp, const std::int32_t & p
 		status = NiFpga_ConfigureFifo2 (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO, 800000, &fifo_depth); //100000 times bigger than target-FIFO
 		status = NiFpga_StartFifo (session, NiFpga_main_v151_TargetToHostFifoI16_ToHostFIFO);
 		status = 10;
-	}
+	}*/
 	
 
 }
@@ -1397,7 +1397,7 @@ void Device::DataAcquisition_thread_body() {
 			}
 	}
 
-	if (Device::mode == 3)
+	/*if (Device::mode == 3)
 	{
 		while(!m_bStop_DataAcquisition){
 			
@@ -1472,7 +1472,7 @@ void Device::DataAcquisition_thread_body() {
 	}	
 			
 			
-	}
+	}*/
 }
 
 void vector_formalization(std::vector<std::int16_t>& data, int numberOfElements){
